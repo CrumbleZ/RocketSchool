@@ -7,6 +7,11 @@ class Rank():
         self.level = level
 
 
+class Level():
+    def __init__(self, name):
+        self.name = name
+
+
 unranked = Rank("Unranked", 0)
 prospect_1 = Rank("Prospect I", 1)
 prospect_2 = Rank("Prospect II", 2)
@@ -25,35 +30,14 @@ super_champion = Rank("Super Champion", 14)
 grand_champion = Rank("Grand Champion", 15)
 
 
-# class Ranks(object):
-#     unranked = 0
-#     prospect_1 = 1
-#     prospect_2 = 2
-#     prospect_3 = 3
-#     prospect_elite = 4
-#     challenger_1 = 5
-#     challenger_2 = 6
-#     challenger_3 = 7
-#     challenger_elite = 8
-#     rising_star = 9
-#     shooting_star = 10
-#     all_star = 11
-#     superstar = 12
-#     champion = 13
-#     super_champion = 14
-#     grand_champion = 15
-
-
-class Levels(Enum):
-    rookie = 0
-    semipro = 1
-    pro = 2
-    veteran = 3
-    expert = 4
-    master = 5
-    legend = 6
-    rocketeer = 7
-
+rookie = Level("Rookie")
+semipro = Level("Semi-pro")
+pro = Level("Pro")
+veteran = Level("Veteran")
+expert = Level("Expert")
+master = Level("Master")
+legend = Level("Legend")
+rocketeer = Level("Rocketeer")
 
 color_blue = "Blue"
 color_orange = "Orange"
@@ -95,3 +79,4 @@ class Game:
         print("{:>25}{:>10}{:>10}{:>10}{:>10}".format("SCORE", "GOALS", "ASSISTS", "SAVES", "SHOTS"))
         for p in t.players:
             print("{:<20}{:<10}{:<10}{:<10}{:<10}{:<10}".format(p.name, p.score, p.goals, p.assists, p.saves, p.shots))
+            # print("  {}  {}".format(p.rank.name, p.level.name))
