@@ -15,6 +15,7 @@ if __name__ == "__main__":
 	# print("blue  : {}".format(pxb))
 	# print("orange : {}".format(pxo))
 	# print("white : {}".format(pxw))
+	
 
 	lower_blue = np.array([100, 100, 230])
 	upper_blue = np.array([105, 170, 255])
