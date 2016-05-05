@@ -29,6 +29,8 @@ champion = Rank("Champion", 13)
 super_champion = Rank("Super Champion", 14)
 grand_champion = Rank("Grand Champion", 15)
 
+ranks = [unranked, prospect_1, prospect_2, prospect_3, prospect_elite, challenger_1, challenger_2, challenger_3,
+         challenger_elite, rising_star, shooting_star, all_star, superstar, champion, super_champion, grand_champion]
 
 rookie = Level("Rookie")
 semipro = Level("Semi-pro")
@@ -39,8 +41,12 @@ master = Level("Master")
 legend = Level("Legend")
 rocketeer = Level("Rocketeer")
 
+levels = [rookie, semipro, pro, veteran, expert, master, legend, rocketeer]
+
 color_blue = "Blue"
 color_orange = "Orange"
+
+colors = [color_blue, color_orange]
 
 
 class Player:
