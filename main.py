@@ -41,13 +41,17 @@ def select_zone(image, x, y, w, h):
 
 
 if __name__ == "__main__":
-	frame = cv2.imread("./resources/endgame/hd_004.png")
+	frame = cv2.imread("./resources/endgame/hd_002.png")
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
 	# acces with "winner" or "loser" keywords
-	score = scoreboard.extract_score(hsv)
-	cv2.imshow("winner", score["winner"])
-	cv2.imshow("loser", score["loser"])
+	# match_score = scoreboard.extract_match_score(hsv)
+	# cv2.imshow("winner", match_score["winner"])
+	# cv2.imshow("loser", match_score["loser"])
+
+	# player score
+	player_score = scoreboard.extract_players_score(hsv)
+	cv2.imwrite("./resources/tmp.png", player_score)
 
 	print("tesseract")
 	image = Image.open("./resources/tmp.png")

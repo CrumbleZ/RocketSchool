@@ -14,8 +14,8 @@ disconnected_upper_blue = np.array([115, 165, 150])
 # disconnected : [16, 151, 145]
 connected_lower_orange = np.array([15, 130, 230])
 connected_upper_orange = np.array([25, 140, 255])
-disconnected_lower_orange = np.array([10, 130, 130])
-disconnected_upper_orange = np.array([20, 165, 160])
+disconnected_lower_orange = np.array([10, 130, 125])
+disconnected_upper_orange = np.array([20, 170, 165])
 
 # Picked HSV White
 # Player : [0, 0, 255]
