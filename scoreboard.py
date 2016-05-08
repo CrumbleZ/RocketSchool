@@ -25,6 +25,7 @@ As this is a work in progress, it is intended to be used
 only on 1920x1080 screenshots as selectors are hardcoded
 """
 
+
 def myround(value, base=20):
     return int(base * round(float(value) / base))
 
