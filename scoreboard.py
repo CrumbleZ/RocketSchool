@@ -7,7 +7,6 @@
 # with source : http://stackoverflow.com/questions/32980675/knn-train-in-cv2-with-opencv-3-0
 
 # libs imports
-from argparse import _ActionsContainer
 import cv2
 import numpy as np
 
@@ -23,7 +22,6 @@ is already displayed
 As this is a work in progress, it is intended to be used
 only on 1920x1080 screenshots as selectors are hardcoded
 """
-
 
 def myround(value, base=20):
     return int(base * round(float(value) / base))
