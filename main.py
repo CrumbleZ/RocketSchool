@@ -10,40 +10,23 @@ import numpy as np
 import colors
 import scoreboard
 from classes import Player
-
-X = 580
-W = 1720 - X
-Y = 270
-H = 810 - 270
-
-
-def get_blue_team_score_mask(frame):
-    return cv2.inRange(frame, colors.team_score_lower_blue, colors.team_score_upper_blue)
-
-
-def get_blue_mask(hsvimage):
-    connected_blue_mask = cv2.inRange(hsvimage, colors.connected_lower_blue, colors.connected_upper_blue)
-    disconnected_blue_mask = cv2.inRange(hsvimage, colors.disconnected_lower_blue, colors.disconnected_upper_blue)
-    return connected_blue_mask + disconnected_blue_mask
-
-
-def get_orange_mask(hsvimage):
-    connected_orange_mask = cv2.inRange(hsvimage, colors.connected_lower_orange, colors.connected_upper_orange)
-    disconnected_orange_mask = cv2.inRange(hsvimage, colors.disconnected_lower_orange, colors.disconnected_upper_orange)
-    return connected_orange_mask + disconnected_orange_mask
-
-
-def get_player_mask(hsvimage):
-    return cv2.inRange(hsvimage, colors.player_lower_white, colors.player_upper_white)
-
-
-def select_zone(image, x, y, w, h):
-    return image[y: y + h, x:x + w]
+import match_ranks
 
 
 if __name__ == "__main__":
-    frame = cv2.imread("./resources/endgame/hd_001.png")
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    frame = cv2.imread("./resources/endgame/hd_004.png")
+    icons = scoreboard.extract_rank_icons(frame)
+
+    cv2.imwrite("./resources/tmp.png", icons)
+    posranks = match_ranks.process(icons)
+
+    for pr in posranks:
+        cv2.putText(frame, pr.rank.name, (10, pr.pos + 64), 0, 0.4, (255, 255, 255), 1, cv2.LINE_AA)
+
+    cv2.imshow("frame", frame)
+
+
+    # hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     # acces with "winner" or "loser" keywords
     # match_score = scoreboard.extract_match_score(hsv)
@@ -56,8 +39,5 @@ if __name__ == "__main__":
 
     # winner = scoreboard.determine_winning_team(hsv)[0]
     # print(winner)
-
-    icons = scoreboard.extract_rank_icons(frame)
-    cv2.imshow("icons", icons)
 
     cv2.waitKey(0)

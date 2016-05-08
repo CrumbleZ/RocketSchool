@@ -23,17 +23,11 @@ class PosRank:
         self.rank = rank
 
 
-# ==================================================#
-#                     CONSTANTS                    #
-# ==================================================#
-SB_WIDTH = 1500
-SB_HEIGHT = 700
-
 
 # ==================================================#
 #                      CORE                         #
 # ==================================================#
-def main(scoreboard_image_cropped):
+def process(scoreboard_image_cropped):
     # Cause short name easier
     sb_img = scoreboard_image_cropped
 
@@ -46,7 +40,6 @@ def main(scoreboard_image_cropped):
     for r in ranks:
         path = 'resources/SkillTierIcons/Icon_SkillGroup{}.png'.format(r.level)
         template = cv2.imread(path, 0)
-        w, h = template.shape[::-1]
         for i in range(len(channels)):
             res = cv2.matchTemplate(channels[i], template, cv2.TM_CCOEFF_NORMED)
             threshold = 0.7
