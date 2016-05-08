@@ -86,7 +86,7 @@ colors = [color_blue, color_orange]
 
 
 class Player:
-    def __init__(self, name, level, rank, score, goals, assists, saves, shots):
+    def __init__(self, name, level=rookie, rank=unranked, score=0, goals=0, assists=0, saves=0, shots=0):
         self.name = name
         self.level = level
         self.rank = rank
@@ -121,4 +121,4 @@ class Game:
         print("{:>25}{:>10}{:>10}{:>10}{:>10}".format("SCORE", "GOALS", "ASSISTS", "SAVES", "SHOTS"))
         for p in t.players:
             print("{:<20}{:<10}{:<10}{:<10}{:<10}{:<10}".format(p.name, p.score, p.goals, p.assists, p.saves, p.shots))
-            # print("  {}  {}".format(p.rank.name, p.level.name))
+        # print("  {}  {}".format(p.rank.name, p.level.name))

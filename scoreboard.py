@@ -9,10 +9,12 @@
 # libs imports
 import cv2
 import numpy as np
+import pytesseract
+from PIL import Image
 
 # custom imports
 import colors
-import classes
+from classes import Player
 
 """
 This has the objectives of extracting parts of the scoreboard
@@ -24,8 +26,8 @@ only on 1920x1080 screenshots as selectors are hardcoded
 """
 
 
-def myround(x, base=20):
-    return int(base * round(float(x) / base))
+def myround(value, base=20):
+    return int(base * round(float(value) / base))
 
 
 def extract_match_score(frame):
@@ -54,6 +56,25 @@ def extract_match_score(frame):
 
     # return both results in a dictionary
     return {'winner': winner, 'loser': loser}
+
+
+def determine_winning_team(frame):
+    x, y, w, h = 670, 300, 175, 300  # zone to extract
+    subframe = frame[y: y + h, x:x + w]
+
+    mask = cv2.inRange(subframe, colors.team_name_lower_blue, colors.team_name_upper_blue)
+    mask += cv2.inRange(subframe, colors.team_name_lower_orange, colors.team_name_upper_orange)
+
+    # got to open image with PIL
+    # for tesseract to work
+    cv2.imwrite("./resources/tmp.png", mask)
+    mask = Image.open("./resources/tmp.png")
+    text = pytesseract.image_to_string(mask)
+
+    if text[0] == 'B':
+        return 'Blue', 'Orange'
+
+    return 'Orange', 'Blue'
 
 
 def extract_players_score(frame):
@@ -106,13 +127,46 @@ def extract_players_score(frame):
                 string = str(int((results[0][0])))
 
                 # group individual digits together to form numbers
-                digits.append({'x': myround(x, 10), 'y': myround(y), 'digit': string})
+                digits.append([myround(x, 10), myround(y), string])
                 cv2.putText(out, string, (x, y + h), 0, 1, (0, 255, 0))
 
+    # todo : default dict
+    # creates one line entry per player
+    # with all associated digits
+    lines = {}
     for digit in digits:
-        print(digit)
+        try:
+            lines[digit[1]] += [(digit[0], digit[2])]
+        except:
+            lines[digit[1]] = [(digit[0], digit[2])]
 
-    cv2.imshow('im', dilation)
-    cv2.imshow('out', out)
+    # group up close digits to form relevant numbers
+    # eg. 190 becomes 190
+    # (one - nine - zero) becomes (one hundred and ninety)
+    for key, items in lines.items():
+        sorted_items = sorted(items, key=lambda r: r[0])
 
-    return out
+        i = 1
+        while i < len(sorted_items):
+            if sorted_items[i][0] - sorted_items[i-1][0] < 40:
+                sorted_items[i-1] = sorted_items[i][0], sorted_items[i-1][1] + sorted_items[i][1]
+                sorted_items.pop(i)
+            else:
+                i += 1
+
+        lines[key] = sorted_items
+
+    # create players and associated score
+    # names correspond to their y location for now
+    players = []
+    for key, values in lines.items():
+        players.append(Player(
+            name=str(key),
+            score=values[0][1],
+            goals=values[1][1],
+            assists=values[2][1],
+            saves=values[3][1],
+            shots=values[4][1]
+        ))
+
+    return players

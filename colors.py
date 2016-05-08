@@ -1,4 +1,3 @@
-from argparse import _ActionsContainer
 import numpy as np
 
 # Picked HSV Blue
@@ -27,4 +26,12 @@ player_upper_white = np.array([255, 45, 255])
 # Orange team score : [24 94 27]
 team_score_lower_white = np.array([0, 0, 220])
 team_score_upper_white = np.array([255, 20, 255])
+
+# Picked HSV Team color-name color
+# Blue : [102 141 255]
+# Orange : [ 22 143 255]
+team_name_lower_blue = np.array([85, 125, 230])
+team_name_upper_blue = np.array([115, 160, 255])
+team_name_lower_orange = np.array([10, 120, 230])
+team_name_upper_orange = np.array([35, 170, 255])
 
