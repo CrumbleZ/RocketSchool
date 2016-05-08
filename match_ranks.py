@@ -8,13 +8,19 @@ from classes import *
 #                     UTILS                        #
 # ==================================================#
 def remove_same(coords):
-    coords.sort()
+    coords.sort(key=lambda x: x.pos)
     i = 1
     while i < len(coords):
-        if coords[i] - coords[i - 1] < 64:
+        if coords[i].pos - coords[i - 1].pos < 64:
             coords.pop(i)
         else:
             i += 1
+
+
+class PosRank:
+    def __init__(self, pos, rank):
+        self.pos = pos
+        self.rank = rank
 
 
 # ==================================================#
@@ -38,7 +44,7 @@ def main(scoreboard_path):
     channels = [img_b, img_g, img_r]
     imgs = [copy(sb_img) for i in range(3)]
 
-    py = {}
+    posranks = []
     T_S = 64
     for r in ranks:
         path = 'resources/SkillTierIcons/Icon_SkillGroup{}.png'.format(r.level)
@@ -48,19 +54,19 @@ def main(scoreboard_path):
             res = cv2.matchTemplate(channels[i], template, cv2.TM_CCOEFF_NORMED)
             threshold = 0.7
             loc = np.where(res >= threshold)
-            py += {pt[1]: r for pt in zip(*loc[::-1])}
+            posranks += [PosRank(pt[1], r) for pt in zip(*loc[::-1])]
 
-    remove_same(py)
+    remove_same(posranks)
 
-    for pt in py:
-        cv2.rectangle(imgs[0], (140, pt), (224, pt + 64), (0, 0, 255), 2)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    for pr in posranks:
+        cv2.putText(sb_img, pr.rank.name, (0, pr.pos+64), font, 0.4, (255, 255, 255), 1, cv2.LINE_AA)
+        print(pr.rank.name)
+        print(pr.pos)
 
-    print(py)
-
-    for i in range(len(imgs)):
-        cv2.imshow("{}".format(i), imgs[i])
+    cv2.imshow("Scoreboard", sb_img)
     cv2.waitKey(0)
 
 
 if __name__ == '__main__':
-    main('scoreboards/scoreboard0.png')
+    main('scoreboards/scoreboard01.jpg')
