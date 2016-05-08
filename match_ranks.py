@@ -31,21 +31,18 @@ SB_HEIGHT = 700
 
 
 # ==================================================#
-#                     CORE                         #
+#                      CORE                         #
 # ==================================================#
-def main(scoreboard_path):
-    sb_path = scoreboard_path
-    sb_img_raw = cv2.imread(sb_path)
-    sb_img = cv2.resize(sb_img_raw, (SB_WIDTH, SB_HEIGHT), interpolation=cv2.INTER_CUBIC)[0:700, 0:200]
-    # sb_img = copy(sb_img_raw)
+def main(scoreboard_image_cropped):
+    # Cause short name easier
+    sb_img = scoreboard_image_cropped
 
+    # Working on every grayscale channel
     img_b, img_g, img_r = cv2.split(sb_img)
 
     channels = [img_b, img_g, img_r]
-    imgs = [copy(sb_img) for i in range(3)]
 
     posranks = []
-    T_S = 64
     for r in ranks:
         path = 'resources/SkillTierIcons/Icon_SkillGroup{}.png'.format(r.level)
         template = cv2.imread(path, 0)
@@ -58,15 +55,13 @@ def main(scoreboard_path):
 
     remove_same(posranks)
 
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    for pr in posranks:
-        cv2.putText(sb_img, pr.rank.name, (10, pr.pos + 64), font, 0.4, (255, 255, 255), 1, cv2.LINE_AA)
-        print(pr.rank.name)
-        print(pr.pos)
+    return posranks
 
-    cv2.imshow("Scoreboard", sb_img)
-    cv2.waitKey(0)
-
-
-if __name__ == '__main__':
-    main('scoreboards/scoreboard.png')
+    # font = cv2.FONT_HERSHEY_SIMPLEX
+    # for pr in posranks:
+    #     cv2.putText(sb_img, pr.rank.name, (10, pr.pos + 64), font, 0.4, (255, 255, 255), 1, cv2.LINE_AA)
+    #     print(pr.rank.name)
+    #     print(pr.pos)
+    #
+    # cv2.imshow("Scoreboard", sb_img)
+    # cv2.waitKey(0)

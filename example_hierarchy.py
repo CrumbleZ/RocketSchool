@@ -27,5 +27,4 @@ for p in game.winner.players + game.loser.players:
         if new:
             p.__dict__[attr] = map_map[attr][int(new)] if attr in map_map else new
 
-
 game.show()
