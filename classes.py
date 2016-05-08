@@ -1,4 +1,4 @@
-from enum import Enum
+import csv
 
 
 class Rank():
@@ -126,13 +126,30 @@ class Game:
         print("{:>25}{:>10}{:>10}{:>10}{:>10}".format("SCORE", "GOALS", "ASSISTS", "SAVES", "SHOTS"))
         for p in t.players:
             print("{:<20}{:<10}{:<10}{:<10}{:<10}{:<10}".format(p.name, p.score, p.goals, p.assists, p.saves, p.shots))
-        # print("  {}  {}".format(p.rank.name, p.level.name))
+            print("\t{}: {}".format("Rank", p.rank.name))
+            # print("\t{}: {}".format("Level", p.level.name))
 
     def validate(self):
         for p in self.winner.players + self.loser.players:
             print("Confirmation for {}".format(p.name))
             for attr in p.__dict__:
-                attr_value = "{} [{}]".format(p.__dict__[attr].name, p.__dict__[attr].level) if attr in map_map else p.__dict__[attr]
+                attr_value = "{} [{}]".format(p.__dict__[attr].name, p.__dict__[attr].level) if attr in map_map else \
+                p.__dict__[attr]
                 new = raw_input("{} => {}: ".format(attr, attr_value))
                 if new:
                     p.__dict__[attr] = map_map[attr][int(new)] if attr in map_map else new
+
+    @staticmethod
+    def save_team(winstate, csvwriter, team):
+        csvwriter.writerow([winstate])
+        csvwriter.writerow([team.score, team.color])
+        for player in team.players:
+            csvwriter.writerow(
+                    [player.name, player.level.name, player.rank.name, player.score, player.goals, player.assists,
+                     player.saves, player.shots])
+
+    def save_all(self, save_file_path):
+        c = csv.writer(open(save_file_path, "ab"), delimiter=';')
+        Game.save_team("WINNER", c, self.winner)
+        Game.save_team("LOSER", c, self.loser)
+        c.writerow(["========================="])

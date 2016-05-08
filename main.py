@@ -1,4 +1,4 @@
-__author__ = "Gabriel Freitas, THomas Roulin"
+__author__ = "Gabriel Freitas, Thomas Roulin"
 
 from PIL import Image
 import pytesseract
@@ -12,7 +12,7 @@ import colors
 import scoreboard
 from classes import *
 import match_ranks
-
+import csv
 
 if __name__ == "__main__":
     # read the frame
@@ -38,9 +38,9 @@ if __name__ == "__main__":
 
         modulo = len(players) / 2
 
-        if(index < modulo):      # winning team
+        if (index < modulo):  # winning team
             team_winner.players[index % modulo].rank = pr.rank
-        else:               # losing team
+        else:  # losing team
             team_loser.players[index % modulo].rank = pr.rank
 
     # now that we have a both teams, create a game
@@ -58,4 +58,5 @@ if __name__ == "__main__":
         elif answer == "y":
             is_user_ok = True
 
-    # todo : append this in some csv or whatever other spreadsheet style-ish fil
+    save_file_path = raw_input("Save file [This will create the file or append to it if it exists]: ")
+    game.save_all(save_file_path)
