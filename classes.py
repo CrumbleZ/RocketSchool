@@ -118,6 +118,7 @@ class Game:
         Game.show_team(self.winner)
         print("================================= LOSER =================================")
         Game.show_team(self.loser)
+        print("=========================================================================")
 
     @staticmethod
     def show_team(t):
@@ -126,3 +127,12 @@ class Game:
         for p in t.players:
             print("{:<20}{:<10}{:<10}{:<10}{:<10}{:<10}".format(p.name, p.score, p.goals, p.assists, p.saves, p.shots))
         # print("  {}  {}".format(p.rank.name, p.level.name))
+
+    def validate(self):
+        for p in self.winner.players + self.loser.players:
+            print("Confirmation for {}".format(p.name))
+            for attr in p.__dict__:
+                attr_value = p.__dict__[attr].name if attr in map_map else p.__dict__[attr]
+                new = raw_input("{} => {}: ".format(attr, attr_value))
+                if new:
+                    p.__dict__[attr] = map_map[attr][int(new)] if attr in map_map else new

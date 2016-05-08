@@ -46,21 +46,16 @@ if __name__ == "__main__":
     # now that we have a both teams, create a game
     game = Game(team_winner, team_loser)
 
+    # Asks the user if the scoreboard is ok or needs modifications
+    is_user_ok = False
 
-    game.show()
+    while not is_user_ok:
+        game.show()
+        answer = raw_input("Is the scoreboard ok? (y/n):")
 
-    # hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        if answer == "n":
+            game.validate()
+        elif answer == "y":
+            is_user_ok = True
 
-    # acces with "winner" or "loser" keywords
-    # match_score = scoreboard.extract_match_score(hsv)
-    # cv2.imshow("winner", match_score["winner"])
-    # cv2.imshow("loser", match_score["loser"])
-
-    # player score
-    # players = scoreboard.extract_players_score(hsv)
-    # print(players[0].name)
-
-    # winner = scoreboard.determine_winning_team(hsv)[0]
-    # print(winner)
-
-    cv2.waitKey(0)
+    # todo : append this in some csv or whatever other spreadsheet style-ish fil
