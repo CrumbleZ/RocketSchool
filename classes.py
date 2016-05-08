@@ -8,8 +8,9 @@ class Rank():
 
 
 class Level():
-    def __init__(self, name):
+    def __init__(self, name, level):
         self.name = name
+        self.level = level
 
 
 unranked = Rank("Unranked", 0)
@@ -32,16 +33,51 @@ grand_champion = Rank("Grand Champion", 15)
 ranks = [unranked, prospect_1, prospect_2, prospect_3, prospect_elite, challenger_1, challenger_2, challenger_3,
          challenger_elite, rising_star, shooting_star, all_star, superstar, champion, super_champion, grand_champion]
 
-rookie = Level("Rookie")
-semipro = Level("Semi-pro")
-pro = Level("Pro")
-veteran = Level("Veteran")
-expert = Level("Expert")
-master = Level("Master")
-legend = Level("Legend")
-rocketeer = Level("Rocketeer")
+ranks_map = {
+    0: unranked,
+    1: prospect_1,
+    2: prospect_2,
+    3: prospect_3,
+    4: prospect_elite,
+    5: challenger_1,
+    6: challenger_2,
+    7: challenger_3,
+    8: challenger_elite,
+    9: rising_star,
+    10: shooting_star,
+    11: all_star,
+    12: superstar,
+    13: champion,
+    14: super_champion,
+    15: grand_champion
+}
+
+rookie = Level("Rookie", 0)
+semipro = Level("Semi-pro", 1)
+pro = Level("Pro", 2)
+veteran = Level("Veteran", 3)
+expert = Level("Expert", 4)
+master = Level("Master", 5)
+legend = Level("Legend", 6)
+rocketeer = Level("Rocketeer", 7)
 
 levels = [rookie, semipro, pro, veteran, expert, master, legend, rocketeer]
+
+levels_map = {
+    0: rookie,
+    1: semipro,
+    2: pro,
+    3: veteran,
+    4: expert,
+    5: master,
+    6: legend,
+    7: rocketeer
+}
+
+map_map = {
+    'level': levels_map,
+    'rank': ranks_map
+}
 
 color_blue = "Blue"
 color_orange = "Orange"

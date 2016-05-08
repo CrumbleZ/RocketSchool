@@ -60,7 +60,7 @@ def main(scoreboard_path):
 
     font = cv2.FONT_HERSHEY_SIMPLEX
     for pr in posranks:
-        cv2.putText(sb_img, pr.rank.name, (0, pr.pos+64), font, 0.4, (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.putText(sb_img, pr.rank.name, (10, pr.pos + 64), font, 0.4, (255, 255, 255), 1, cv2.LINE_AA)
         print(pr.rank.name)
         print(pr.pos)
 
@@ -69,4 +69,4 @@ def main(scoreboard_path):
 
 
 if __name__ == '__main__':
-    main('scoreboards/scoreboard01.jpg')
+    main('scoreboards/scoreboard.png')
