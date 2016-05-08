@@ -132,7 +132,7 @@ class Game:
         for p in self.winner.players + self.loser.players:
             print("Confirmation for {}".format(p.name))
             for attr in p.__dict__:
-                attr_value = p.__dict__[attr].name if attr in map_map else p.__dict__[attr]
+                attr_value = "{} [{}]".format(p.__dict__[attr].name, p.__dict__[attr].level) if attr in map_map else p.__dict__[attr]
                 new = raw_input("{} => {}: ".format(attr, attr_value))
                 if new:
                     p.__dict__[attr] = map_map[attr][int(new)] if attr in map_map else new
