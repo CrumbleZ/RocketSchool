@@ -1,9 +1,18 @@
+# Part of the code in extract_players_score() comes from the internet
+# Source :
+# http://stackoverflow.com/questions/9413216/simple-digit-recognition-ocr-in-opencv-python
+# NB : Values are tweaked to meet our needs
+
+# part of the code adapted from opencv2 to opencv3
+# with source : http://stackoverflow.com/questions/32980675/knn-train-in-cv2-with-opencv-3-0
+
 # libs imports
 import cv2
 import numpy as np
 
 # custom imports
 import colors
+import classes
 
 """
 This has the objectives of extracting parts of the scoreboard
@@ -81,6 +90,8 @@ def extract_players_score(frame):
 
 	drop, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
+	digits = []
+
 	for cnt in contours:
 		if cv2.contourArea(cnt) > 100:
 			[x, y, w, h] = cv2.boundingRect(cnt)
@@ -92,8 +103,13 @@ def extract_players_score(frame):
 				roismall = np.float32(roismall)
 				retval, results, neigh_resp, dists = model.findNearest(roismall, k=1)
 				string = str(int((results[0][0])))
-				print("[{},{}] : {}".format(myround(x), myround(y), string))
+
+				# group individual digits together to form numbers
+				digits.append({'x': myround(x, 10), 'y': myround(y), 'digit': string})
 				cv2.putText(out, string, (x, y + h), 0, 1, (0, 255, 0))
+
+	for digit in digits:
+		print(digit)
 
 	cv2.imshow('im', dilation)
 	cv2.imshow('out', out)
