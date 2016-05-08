@@ -77,6 +77,12 @@ def determine_winning_team(frame):
     return 'Orange', 'Blue'
 
 
+def extract_rank_icons(frame):
+    x, y, w, h = 681, 353, 48, 417  # zone to extract
+    scale = 64.0/48.0
+    return cv2.resize(frame[y: y + h, x:x + w], (0,0), fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+
+
 def extract_players_score(frame):
     x, y, w, h = 1125, 350, 465, 420  # zone to extract
 
