@@ -5,26 +5,49 @@ import pytesseract
 
 import cv2
 import numpy as np
+import sys
 
 # custom imports
 import colors
 import scoreboard
-from classes import Player
+from classes import *
 import match_ranks
 
 
 if __name__ == "__main__":
-    frame = cv2.imread("./resources/endgame/hd_004.png")
-    icons = scoreboard.extract_rank_icons(frame)
+    # read the frame
+    frame = cv2.imread(sys.argv[1])
 
-    cv2.imwrite("./resources/tmp.png", icons)
+    # use hsv frame needed for some functions
+    hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    # grab a list of players and their scores
+    players = scoreboard.extract_players_score(hsv_frame)
+
+    # now that we have players, make a team
+    winner, loser = scoreboard.determine_winning_team(hsv_frame)
+    team_winner = Team(winner, players[0:len(players) / 2])
+    team_loser = Team(loser, players[len(players) / 2:len(players)])
+
+    # extract ranks and associate them to players
+    icons = scoreboard.extract_rank_icons(frame)
     posranks = match_ranks.process(icons)
 
     for pr in posranks:
-        cv2.putText(frame, pr.rank.name, (10, pr.pos + 64), 0, 0.4, (255, 255, 255), 1, cv2.LINE_AA)
+        index = scoreboard.myround(pr.pos, 64) / 64
 
-    cv2.imshow("frame", frame)
+        modulo = len(players) / 2
 
+        if(index < modulo):      # winning team
+            team_winner.players[index % modulo].rank = pr.rank
+        else:               # losing team
+            team_loser.players[index % modulo].rank = pr.rank
+
+    # now that we have a both teams, create a game
+    game = Game(team_winner, team_loser)
+
+
+    game.show()
 
     # hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 

@@ -98,8 +98,12 @@ class Player:
 
 
 class Team:
-    def __init__(self, score, color, players):
-        self.score = score
+    def __init__(self, color, players):
+        self.score = 0
+
+        for player in players:
+            self.score += player.goals
+
         self.color = color
         self.players = players
 

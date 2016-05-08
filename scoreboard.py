@@ -79,8 +79,8 @@ def determine_winning_team(frame):
 
 def extract_rank_icons(frame):
     x, y, w, h = 669, 353, 72, 417  # zone to extract
-    scale = 64.0/48.0
-    return cv2.resize(frame[y: y + h, x:x + w], (0,0), fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+    scale = 64.0 / 48.0
+    return cv2.resize(frame[y: y + h, x:x + w], (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
 
 
 def extract_players_score(frame):
@@ -154,8 +154,8 @@ def extract_players_score(frame):
 
         i = 1
         while i < len(sorted_items):
-            if sorted_items[i][0] - sorted_items[i-1][0] < 40:
-                sorted_items[i-1] = sorted_items[i][0], sorted_items[i-1][1] + sorted_items[i][1]
+            if sorted_items[i][0] - sorted_items[i - 1][0] < 40:
+                sorted_items[i - 1] = sorted_items[i][0], sorted_items[i - 1][1] + sorted_items[i][1]
                 sorted_items.pop(i)
             else:
                 i += 1
@@ -165,14 +165,19 @@ def extract_players_score(frame):
     # create players and associated score
     # names correspond to their y location for now
     players = []
-    for key, values in lines.items():
+    i = 0
+    for key, values in sorted(lines.items()):
+        tag = "Winner" if i < len(lines) / 2 else "Loser"
+
         players.append(Player(
-            name=str(key),
-            score=values[0][1],
-            goals=values[1][1],
-            assists=values[2][1],
-            saves=values[3][1],
-            shots=values[4][1]
+            name="{} {}".format(tag, i % (len(lines) / 2) + 1),
+            score=int(values[0][1]),
+            goals=int(values[1][1]),
+            assists=int(values[2][1]),
+            saves=int(values[3][1]),
+            shots=int(values[4][1])
         ))
+
+        i += 1
 
     return players
