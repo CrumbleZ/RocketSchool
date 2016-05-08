@@ -9,6 +9,8 @@
 # libs imports
 import cv2
 import numpy as np
+import pytesseract
+from PIL import Image
 
 # custom imports
 import colors
@@ -53,6 +55,25 @@ def extract_match_score(frame):
 
     # return both results in a dictionary
     return {'winner': winner, 'loser': loser}
+
+
+def determine_winning_team(frame):
+    x, y, w, h = 670, 300, 175, 300  # zone to extract
+    subframe = frame[y: y + h, x:x + w]
+
+    mask = cv2.inRange(subframe, colors.team_name_lower_blue, colors.team_name_upper_blue)
+    mask += cv2.inRange(subframe, colors.team_name_lower_orange, colors.team_name_upper_orange)
+
+    # got to open image with PIL
+    # for tesseract to work
+    cv2.imwrite("./resources/tmp.png", mask)
+    mask = Image.open("./resources/tmp.png")
+    text = pytesseract.image_to_string(mask)
+
+    if text[0] == 'B':
+        return 'Blue', 'Orange'
+
+    return 'Orange', 'Blue'
 
 
 def extract_players_score(frame):
@@ -138,7 +159,6 @@ def extract_players_score(frame):
     # names correspond to their y location for now
     players = []
     for key, values in lines.items():
-        print(values)
         players.append(Player(
             name=str(key),
             score=values[0][1],

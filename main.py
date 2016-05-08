@@ -42,7 +42,7 @@ def select_zone(image, x, y, w, h):
 
 
 if __name__ == "__main__":
-    frame = cv2.imread("./resources/endgame/hd_001.png")
+    frame = cv2.imread("./resources/endgame/hd_003.png")
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     # acces with "winner" or "loser" keywords
@@ -51,8 +51,11 @@ if __name__ == "__main__":
     # cv2.imshow("loser", match_score["loser"])
 
     # player score
-    players = scoreboard.extract_players_score(hsv)
-    print(players[0].name)
+    # players = scoreboard.extract_players_score(hsv)
+    # print(players[0].name)
+
+    winner = scoreboard.determine_winning_team(hsv)[0]
+    print(winner)
 
 
     # hsv = select_zone(hsv, X, Y, W, H)
