@@ -23,14 +23,14 @@ Plutôt que d'utiliser un OCR pour reconnaître le score final, on se sert du r�
 
 # Comment utiliser ?
 Lancer le script `main.py` avec le chemin de la capture d'écran à analyser en argument de la ligne de commande
-Les captures d'écran doivent être de taille 1920x1080 et l'indicateur "winner" doit être indiqué à l'écran
+Les captures d'écran **doivent** être de taille 1920x1080 et l'indicateur "winner" doit être indiqué à l'écran
 
 Exemple : 
 ```
 python main.py ./path/to/image.png
 ```
 
-## Pourquoi ?
+## Pourquoi cette contrainte ?
 Parce que c'est beaucoup trop hardcore de détecter la position du scoreboard à cause de beaucoup de facteurs 
 * Le dégradé de couleur change en fonction de l'équipe gagnante
 * La position du scoreboard change en fonction de la résolution de la capture
